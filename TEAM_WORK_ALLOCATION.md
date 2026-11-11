@@ -152,8 +152,8 @@ Update each status only after checking the work. Use one of these statuses:
 
 | Phase | Task | Owner | Branch | Status |
 |---|---|---|---|---|
-| 1 | Create local project directory and initial root structure | Maria | Local setup | NOT STARTED |
-| 1 | Create GitHub repository and add Sanskaar as collaborator | Maria | GitHub setup | NOT STARTED |
+| 1 | Create local project directory and initial root structure | Maria | Local setup | COMPLETED |
+| 1 | Create GitHub repository and add Sanskaar as collaborator | Maria | GitHub setup | IN PROGRESS |
 | 1 | Verify both developers can access and clone the repository | Both | — | NOT STARTED |
 | 2 | Build FastAPI starter, health endpoint and version handling | Sanskaar | `setup/starter` | NOT STARTED |
 | 2 | Add health tests and development dependencies | Maria | `setup/tests` | NOT STARTED |
@@ -354,7 +354,7 @@ Update this section after each verified phase. Include the date, phase, owner, f
 
 | Date | Phase / task | Owner | Files changed | Summary and verification evidence | Blockers |
 |---|---|---|---|---|---|
-| — | Initial allocation | Both | `TEAM_WORK_ALLOCATION.md` | Ownership and workflow documented; implementation status to be updated as work proceeds | None recorded |
+| 2026-11-11 | Phase 1 / Local project & GitHub repo | Maria | `team-api/`, `.gitignore`, `README.md`, `TEAM_WORK_ALLOCATION.md` | Created local repository skeleton, initialized Git on `main`, created public GitHub repository `rasmusmaria26-cell/team-api` and pushed initial commit | Waiting for Sanskaar's GitHub username to add collaborator |
 
 ## 10. Working rules for OpenCode and other coding assistants
 
