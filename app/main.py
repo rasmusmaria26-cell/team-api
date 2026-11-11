@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 from fastapi import FastAPI
+from app.routers.maria_tools import router as maria_router
+from app.routers.san_tools import router as san_router
 
 app = FastAPI(
     title="DevKit API",
@@ -31,4 +33,9 @@ def health():
         "status": "ok",
         "version": get_app_version(),
     }
+
+
+# Register both feature routers
+app.include_router(maria_router)
+app.include_router(san_router)
 
