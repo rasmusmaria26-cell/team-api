@@ -157,8 +157,8 @@ Update each status only after checking the work. Use one of these statuses:
 | 1 | Verify both developers can access and clone the repository | Both | — | COMPLETED |
 | 2 | Build FastAPI starter, health endpoint and version handling | Sanskaar | `setup/starter` | COMPLETED |
 | 2 | Add health tests and development dependencies | Maria | `setup/tests` | COMPLETED |
-| 3 | Create Dockerfile and `.dockerignore` | Sanskaar | `setup/docker` | IN PROGRESS |
-| 3 | Build and run Docker image independently | Both | — | NOT STARTED |
+| 3 | Create Dockerfile and `.dockerignore` | Sanskaar | `setup/docker` | COMPLETED |
+| 3 | Build and run Docker image independently | Both | — | IN PROGRESS |
 | 4 | Create GitHub Actions CI workflow | Maria | `setup/ci` | NOT STARTED |
 | 4 | Review CI workflow and verify Docker build compatibility | Sanskaar | — | NOT STARTED |
 | 5 | Configure main branch protection | Maria | GitHub settings | NOT STARTED |
@@ -357,6 +357,7 @@ Update this section after each verified phase. Include the date, phase, owner, f
 | 2026-11-11 | Phase 1 / Local project & GitHub repo | Maria | `team-api/`, `.gitignore`, `README.md`, `TEAM_WORK_ALLOCATION.md` | Created local repository skeleton, initialized Git on `main`, created public GitHub repository `rasmusmaria26-cell/team-api` and pushed initial commit | None |
 | 2026-11-11 | Phase 2 / Starter app & health endpoint | Sanskaar | `requirements.txt`, `app/__init__.py`, `app/main.py`, `app/version.txt`, `app/routers/__init__.py` | Created FastAPI starter application with GET /health reading dynamic version, verified locally, merged via PR #1 | None |
 | 2026-11-11 | Phase 2 / Health tests & dev dependencies | Maria | `requirements-dev.txt`, `tests/__init__.py`, `tests/test_health.py` | Implemented automated health check tests with pytest & httpx, verified locally (1 passed), merged via PR #2 | None |
+| 2026-11-11 | Phase 3 / Dockerfile and .dockerignore | Sanskaar | `Dockerfile`, `.dockerignore`, `TEAM_WORK_ALLOCATION.md` | Created python:3.12-slim Dockerfile and .dockerignore. Built image `team-api` successfully. Ran container on port 8000; GET /health returned {"status":"ok","version":"0.1.0"}. Stopped and removed test container. | None |
 
 ## 10. Working rules for OpenCode and other coding assistants
 
