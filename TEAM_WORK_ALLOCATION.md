@@ -169,8 +169,8 @@ Update each status only after checking the work. Use one of these statuses:
 | 7 | Review deployment workflow and verify live application | Sanskaar | — | NOT STARTED |
 | 8 | Implement `/add` and `/wordcount` with tests | Maria | `feature/maria-tools` | NOT STARTED |
 | 8 | Implement `/greet` and `/reverse` with tests | Sanskaar | `feature/san-tools` | NOT STARTED |
-| 9 | Register both routers in `app/main.py` after feature PRs merge | Sanskaar | `integration/register-routers` | NOT STARTED |
-| 9 | Review integration and verify all four feature endpoints | Maria and Sanskaar | — | NOT STARTED |
+| 9 | Register both routers in `app/main.py` after feature PRs merge | Sanskaar | `integration/register-routers` | COMPLETED |
+| 9 | Review integration and verify all four feature endpoints | Maria and Sanskaar | — | IN PROGRESS |
 | 10 | Demonstrate a deliberate CI test failure, then restore the test | Both | Temporary branch | NOT STARTED |
 | 11 | Complete final acceptance checks and README handover | Both | — | NOT STARTED |
 | 11 | Delete Railway project if it is no longer needed after the workshop | Maria | Railway | NOT STARTED |
@@ -358,6 +358,8 @@ Update this section after each verified phase. Include the date, phase, owner, f
 | 2026-11-11 | Phase 2 / Starter app & health endpoint | Sanskaar | `requirements.txt`, `app/__init__.py`, `app/main.py`, `app/version.txt`, `app/routers/__init__.py` | Created FastAPI starter application with GET /health reading dynamic version, verified locally, merged via PR #1 | None |
 | 2026-11-11 | Phase 2 / Health tests & dev dependencies | Maria | `requirements-dev.txt`, `tests/__init__.py`, `tests/test_health.py` | Implemented automated health check tests with pytest & httpx, verified locally (1 passed), merged via PR #2 | None |
 | 2026-11-11 | Phase 3 / Dockerfile and .dockerignore | Sanskaar | `Dockerfile`, `.dockerignore`, `TEAM_WORK_ALLOCATION.md` | Created python:3.12-slim Dockerfile and .dockerignore. Built image `team-api` successfully. Ran container on port 8000; GET /health returned {"status":"ok","version":"0.1.0"}. Stopped and removed test container. | None |
+| 2026-11-11 | Phase 8 / san-tools feature | Sanskaar | `app/routers/san_tools.py`, `tests/test_san_tools.py` | Implemented GET /greet/{name} and GET /reverse/{text} with unit tests. 2 tests passed. Merged via PR #4. | None |
+| 2026-11-11 | Phase 9 / Router integration | Sanskaar | `app/main.py`, `TEAM_WORK_ALLOCATION.md` | Registered maria_tools and san_tools routers in app/main.py. All 7 tests pass (health, add x2, wordcount x2, greet, reverse). PR opened for Maria review. | None |
 
 ## 10. Working rules for OpenCode and other coding assistants
 
