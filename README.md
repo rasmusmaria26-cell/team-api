@@ -9,6 +9,10 @@
 
 A precision developer utility toolkit API built with **FastAPI**, containerized with **Docker**, automated with **GitHub Actions CI/CD**, deployed to **Railway**, and delivered with a built-in, zero-build interactive **API Workbench**.
 
+> 🚀 **Live Production URL:** [https://team-api-production-f9173e6b.up.railway.app/](https://team-api-production-f9173e6b.up.railway.app/)  
+> 📑 **Interactive Swagger UI:** [https://team-api-production-f9173e6b.up.railway.app/docs](https://team-api-production-f9173e6b.up.railway.app/docs)  
+> 🩺 **Live Health Check:** [https://team-api-production-f9173e6b.up.railway.app/health](https://team-api-production-f9173e6b.up.railway.app/health)
+
 ---
 
 ## 1. Project Overview
@@ -25,7 +29,7 @@ DevKit API provides lightweight, high-performance developer utilities accessible
 
 ## 2. Interactive DevKit Workbench
 
-DevKit features a built-in developer workbench accessible directly at `http://127.0.0.1:8000/`. It serves as an in-browser workspace for configuring requests, inspecting responses, testing edge cases, and reading endpoint specifications.
+DevKit features a built-in developer workbench accessible in production at [https://team-api-production-f9173e6b.up.railway.app/](https://team-api-production-f9173e6b.up.railway.app/) and locally at `http://127.0.0.1:8000/`. It serves as an in-browser workspace for configuring requests, inspecting responses, testing edge cases, and reading endpoint specifications.
 
 ![DevKit API Workbench Active](docs/images/08-devkit-workbench-active.png)
 
