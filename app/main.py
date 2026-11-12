@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from app.routers.maria_tools import router as maria_router
 from app.routers.san_tools import router as san_router
 
@@ -11,6 +12,7 @@ app = FastAPI(
 )
 
 VERSION_FILE = Path(__file__).parent / "version.txt"
+STATIC_DIR = Path(__file__).parent / "static"
 
 
 def get_app_version() -> str:
@@ -39,7 +41,7 @@ def health():
 app.include_router(maria_router)
 app.include_router(san_router)
 
-
-# Note: Conflict resolved — verified by both Maria and Sanskaar
- 
+# Mount static frontend workbench last so API routes take precedence
+if STATIC_DIR.exists():
+    app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
 
