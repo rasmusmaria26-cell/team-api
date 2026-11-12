@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEVKIT — API Workbench</title>
+  <meta name="description" content="Industrial precision API workbench for the DevKit backend.">
+
+  <!-- Theme Initialization: Prevents flash of wrong theme before first visible render -->
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('devkit-theme');
+        var theme = 'dark';
+        if (savedTheme === 'light' || savedTheme === 'dark') {
+          theme = savedTheme;
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+          theme = 'light';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+
+  <!-- Typography: Space Grotesk, Inter, IBM Plex Mono with platform fallbacks in CSS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div class="app-layout">
+    <!-- ======================================================================
+         1. APPLICATION HEADER
+         ====================================================================== -->
+    <header class="app-header" role="banner">
+      <div class="header-left">
+        <!-- Mobile Navigation Toggle -->
+        <button id="mobile-menu-btn" class="btn-icon mobile-menu-btn" aria-label="Open navigation menu"
+          aria-expanded="false" aria-controls="app-sidebar">
+          <svg class="icon icon-menu" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="6" y2="6"></line>
+            <line x1="4" x2="20" y1="18" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Brand Identity -->
+        <div class="brand-group">
+          <span class="brand-mark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+              <path d="m9 8 4 4-4 4"></path>
+              <path d="M15 16h2"></path>
+            </svg>
+          </span>
+          <span class="brand-name">DEVKIT</span>
+          <span class="brand-badge">v0.1.0</span>
+        </div>
+      </div>
+
+      <!-- Backend Connection Indicator (Phase 2 Placeholder) -->
+      <div class="header-center">
+        <div id="connection-indicator" class="connection-pill" role="status" aria-live="polite">
+          <span class="indicator-dot dot-standby" aria-hidden="true"></span>
+          <span id="connection-status-text" class="indicator-label">Standby</span>
+        </div>
+      </div>
+
+      <!-- Header Action Controls -->
+      <div class="header-right">
+        <!-- External Swagger Link -->
+        <a href="/docs" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm btn-icon-text"
+          title="Open FastAPI Swagger documentation in a new tab">
+          <span>Swagger</span>
+          <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" x2="21" y1="14" y2="3"></line>
+          </svg>
+        </a>
+
+        <!-- Documentation Drawer Trigger Placeholder -->
+        <button id="docs-drawer-btn" class="btn-icon" aria-label="Open documentation drawer" aria-controls="docs-drawer"
+          aria-expanded="false" title="Documentation">
+          <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+            <path d="M6 6h10"></path>
+            <path d="M6 10h10"></path>
+          </svg>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button id="theme-toggle-btn" class="btn-icon" aria-label="Switch to light theme"
+          title="Toggle theme (Dark / Light)">
+          <!-- Moon Icon (shown in dark mode) -->
+          <svg class="icon icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+          <!-- Sun Icon (shown in light mode) -->
+          <svg class="icon icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2"></path>
+            <path d="M12 20v2"></path>
+            <path d="m4.93 4.93 1.41 1.41"></path>
+            <path d="m17.66 17.66 1.41 1.41"></path>
+            <path d="M2 12h2"></path>
+            <path d="M20 12h2"></path>
+            <path d="m6.34 17.66-1.41 1.41"></path>
+            <path d="m19.07 4.93-1.41 1.41"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ======================================================================
+         2. APPLICATION BODY & SIDEBAR
+         ====================================================================== -->
+    <div class="app-body">
+      <!-- Mobile Backdrop Overlay -->
+      <div id="sidebar-backdrop" class="sidebar-backdrop" aria-hidden="true"></div>
+
+      <!-- Compact Left Navigation -->
+      <aside class="app-sidebar" id="app-sidebar" aria-label="DevKit Navigation">
+        <!-- Close button visible only on mobile -->
+        <div class="sidebar-mobile-header">
+          <span class="nav-section-title">Navigation</span>
+          <button id="mobile-sidebar-close" class="btn-icon btn-sm" aria-label="Close navigation">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Endpoint Collection -->
+        <div class="nav-group">
+          <div class="nav-section-title">Endpoints</div>
+          <ul class="endpoint-nav" role="list">
+            <li>
+              <button class="endpoint-item active" data-endpoint="/add" data-method="GET" aria-current="page">
+                <span class="method-badge method-get">GET</span>
+                <div class="endpoint-meta">
+                  <span class="endpoint-path">/add</span>
+                  <span class="endpoint-desc">Add two numbers</span>
+                </div>
+              </button>
+            </li>
+            <li>
+              <button class="endpoint-item" data-endpoint="/wordcount" data-method="POST">
+                <span class="method-badge method-post">POST</span>
+                <div class="endpoint-meta">
+                  <span class="endpoint-path">/wordcount</span>
+                  <span class="endpoint-desc">Count words in text</span>
+                </div>
+              </button>
+            </li>
+            <li>
+              <button class="endpoint-item" data-endpoint="/greet" data-method="GET">
+                <span class="method-badge method-get">GET</span>
+                <div class="endpoint-meta">
+                  <span class="endpoint-path">/greet/{name}</span>
+                  <span class="endpoint-desc">Personalized greeting</span>
+                </div>
+              </button>
+            </li>
+            <li>
+              <button class="endpoint-item" data-endpoint="/reverse" data-method="GET">
+                <span class="method-badge method-get">GET</span>
+                <div class="endpoint-meta">
+                  <span class="endpoint-path">/reverse/{text}</span>
+                  <span class="endpoint-desc">Reverse input string</span>
+                </div>
+              </button>
+            </li>
+            <li>
+              <button class="endpoint-item" data-endpoint="/health" data-method="GET">
+                <span class="method-badge method-get">GET</span>
+                <div class="endpoint-meta">
+                  <span class="endpoint-path">/health</span>
+                  <span class="endpoint-desc">Service health status</span>
+                </div>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Recent History Section (Phase 5) -->
+        <div class="nav-group nav-group-history">
+          <div class="nav-section-header">
+            <span class="nav-section-title">Recent History</span>
+            <div class="history-header-actions">
+              <span id="history-count-badge" class="history-count-badge" aria-label="History capacity: 0 of 20">0/20</span>
+              <button id="clear-history-btn" class="btn-text btn-xs text-muted" title="Clear all recent requests" aria-label="Clear all recent requests" style="display: none;">Clear</button>
+            </div>
+          </div>
+          <div id="history-empty" class="history-placeholder">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+              stroke-linecap="round" stroke-linejoin="round" class="placeholder-icon" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <p class="placeholder-text">No recent requests.<br><span class="text-subtle">Executed requests will appear here.</span></p>
+          </div>
+          <ul id="history-list" class="history-list" role="list" aria-label="Recent request history" style="display: none;"></ul>
+        </div>
+      </aside>
+
+      <!-- ======================================================================
+           3. MAIN WORKSPACE (Request Builder & Response Inspector Placeholders)
+           ====================================================================== -->
+      <main class="app-workspace" id="app-workspace">
+        <!-- Panel 1: Request Builder -->
+        <section class="panel request-panel" aria-labelledby="request-panel-heading">
+          <header class="panel-header">
+            <div class="panel-header-title">
+              <h2 id="request-panel-heading" class="panel-title">Request Builder</h2>
+              <span id="request-panel-subtitle" class="panel-subtitle">Configure parameters and execute API call</span>
+            </div>
+            <!-- Mode Switcher Tabs -->
+            <div class="mode-tabs" role="tablist" aria-label="Request Editor Mode">
+              <button id="mode-tab-structured" class="mode-tab active" role="tab" aria-selected="true" aria-controls="structured-editor">Structured</button>
+              <button id="mode-tab-raw" class="mode-tab" role="tab" aria-selected="false" aria-controls="raw-editor">Raw</button>
+            </div>
+          </header>
+
+          <!-- Live Endpoint Target Bar -->
+          <div class="request-target-bar">
+            <span id="target-method-badge" class="method-badge method-get">GET</span>
+            <div class="target-url-container">
+              <span id="target-url-preview" class="target-url-text">/add?a=2&b=3</span>
+            </div>
+          </div>
+
+          <div class="panel-body">
+            <!-- Form Validation Message Box -->
+            <div id="request-validation-alert" class="alert-box alert-error" role="alert" style="display: none;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <span id="request-validation-text">Validation error message</span>
+            </div>
+
+            <!-- 1. STRUCTURED MODE VIEW -->
+            <div id="structured-editor" class="editor-view" role="tabpanel" aria-labelledby="mode-tab-structured">
+              <!-- Form for /add -->
+              <form id="form-add" class="endpoint-form active" data-endpoint="/add" onsubmit="return false;">
+                <p class="form-description">Adds two numbers together. Returns both the computed sum and result.</p>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="input-add-a" class="form-label">
+                      <span>Parameter <code>a</code></span>
+                      <span class="param-badge">query &bull; float</span>
+                    </label>
+                    <input type="number" step="any" id="input-add-a" class="input-field" value="2" required placeholder="Enter number (e.g. 2)">
+                  </div>
+                  <div class="form-group">
+                    <label for="input-add-b" class="form-label">
+                      <span>Parameter <code>b</code></span>
+                      <span class="param-badge">query &bull; float</span>
+                    </label>
+                    <input type="number" step="any" id="input-add-b" class="input-field" value="3" required placeholder="Enter number (e.g. 3)">
+                  </div>
+                </div>
+              </form>
+
+              <!-- Form for /wordcount -->
+              <form id="form-wordcount" class="endpoint-form" data-endpoint="/wordcount" style="display: none;" onsubmit="return false;">
+                <p class="form-description">Analyzes input text and counts words. Accepts a JSON payload.</p>
+                <div class="form-group">
+                  <div class="label-row">
+                    <label for="input-wordcount-text" class="form-label">
+                      <span>Payload <code>text</code></span>
+                      <span class="param-badge">body &bull; string</span>
+                    </label>
+                    <span id="wordcount-stats" class="text-subtle text-xs">26 chars &bull; 4 words</span>
+                  </div>
+                  <textarea id="input-wordcount-text" class="input-field textarea-field" rows="5" required placeholder="Enter text to analyze...">Hello world from DevKit</textarea>
+                </div>
+              </form>
+
+              <!-- Form for /greet -->
+              <form id="form-greet" class="endpoint-form" data-endpoint="/greet" style="display: none;" onsubmit="return false;">
+                <p class="form-description">Generates a personalized greeting for the provided name.</p>
+                <div class="form-group">
+                  <label for="input-greet-name" class="form-label">
+                    <span>Parameter <code>name</code></span>
+                    <span class="param-badge">path &bull; string</span>
+                  </label>
+                  <input type="text" id="input-greet-name" class="input-field" value="Developer" required placeholder="Enter name (e.g. Developer)">
+                  <span class="form-hint">Spaces and reserved characters are safely URL-encoded.</span>
+                </div>
+              </form>
+
+              <!-- Form for /reverse -->
+              <form id="form-reverse" class="endpoint-form" data-endpoint="/reverse" style="display: none;" onsubmit="return false;">
+                <p class="form-description">Reverses the character sequence of the input text string.</p>
+                <div class="form-group">
+                  <label for="input-reverse-text" class="form-label">
+                    <span>Parameter <code>text</code></span>
+                    <span class="param-badge">path &bull; string</span>
+                  </label>
+                  <input type="text" id="input-reverse-text" class="input-field" value="FastAPI" required placeholder="Enter text to reverse (e.g. FastAPI)">
+                  <span class="form-hint">Spaces and special characters are safely URL-encoded.</span>
+                </div>
+              </form>
+
+              <!-- Form for /health -->
+              <form id="form-health" class="endpoint-form" data-endpoint="/health" style="display: none;" onsubmit="return false;">
+                <p class="form-description">Verifies API server operational health and deployed version. Requires no parameters.</p>
+                <div class="notice-box">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 14 14"></polyline>
+                  </svg>
+                  <span>Zero-parameter GET health check endpoint against the FastAPI backend.</span>
+                </div>
+              </form>
+            </div>
+
+            <!-- 2. RAW MODE VIEW -->
+            <div id="raw-editor" class="editor-view" role="tabpanel" aria-labelledby="mode-tab-raw" style="display: none;">
+              <div class="form-group">
+                <label for="raw-url-input" class="form-label">
+                  <span>Target URL / Path</span>
+                  <span class="param-badge">HTTP Request</span>
+                </label>
+                <input type="text" id="raw-url-input" class="input-field font-mono" readonly aria-readonly="true">
+              </div>
+
+              <div id="raw-body-section" class="form-group mt-3">
+                <div class="label-row">
+                  <label for="raw-json-body" class="form-label">
+                    <span>Request Body (JSON)</span>
+                    <span id="raw-json-status" class="param-badge">Valid JSON</span>
+                  </label>
+                </div>
+                <textarea id="raw-json-body" class="input-field textarea-field font-mono" rows="8" spellcheck="false" placeholder="Enter raw JSON body..."></textarea>
+              </div>
+
+              <div id="raw-get-notice" class="notice-box mt-3" style="display: none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>HTTP GET requests do not include a body payload. Parameters are encoded in the URL path and query string.</span>
+              </div>
+            </div>
+          </div>
+
+          <footer class="panel-footer">
+            <span class="footer-meta-text">Target: <code id="footer-target-code" class="code-badge">GET /add?a=2&b=3</code></span>
+            <button id="send-request-btn" class="btn btn-primary btn-sm" title="Send Request (Ctrl+Enter)">
+              <span id="send-btn-spinner" class="spinner" aria-hidden="true" style="display: none;"></span>
+              <span id="send-btn-label">Send Request</span>
+              <svg id="send-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </footer>
+        </section>
+
+        <!-- Panel 2: Response Inspector (Phase 4) -->
+        <section class="panel response-panel" id="response-panel" aria-labelledby="response-panel-heading">
+          <header class="panel-header">
+            <div class="panel-header-title">
+              <h2 id="response-panel-heading" class="panel-title">Response Inspector</h2>
+              <span id="response-panel-subtitle" class="panel-subtitle">Formatted & raw response payloads</span>
+            </div>
+            <!-- Response Inspector Tabs -->
+            <div class="mode-tabs" role="tablist" aria-label="Response View Mode">
+              <button id="resp-tab-formatted" class="mode-tab active" role="tab" aria-selected="true" aria-controls="resp-view-formatted">Formatted</button>
+              <button id="resp-tab-raw" class="mode-tab" role="tab" aria-selected="false" aria-controls="resp-view-raw">Raw</button>
+              <button id="resp-tab-headers" class="mode-tab" role="tab" aria-selected="false" aria-controls="resp-view-headers">Headers</button>
+            </div>
+          </header>
+
+          <!-- Response Metadata Bar -->
+          <div class="response-meta-bar">
+            <div class="meta-left">
+              <span id="resp-status-badge" class="status-badge status-muted">
+                <span class="status-dot"></span>
+                <span id="resp-status-text">STANDBY</span>
+              </span>
+              <span id="resp-stale-badge" class="status-badge status-stale" style="display: none;">
+                PREVIOUS
+              </span>
+            </div>
+            <div class="meta-right">
+              <span id="resp-duration-badge" class="metric-pill" title="Execution Duration">-- ms</span>
+              <span id="resp-size-badge" class="metric-pill" title="Payload Size">-- B</span>
+            </div>
+          </div>
+
+          <div class="panel-body response-panel-body">
+            <!-- Empty State -->
+            <div id="resp-empty-state" class="placeholder-content">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round" class="placeholder-icon-large" aria-hidden="true">
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
+              </svg>
+              <h3 class="placeholder-title">Awaiting Request</h3>
+              <p class="placeholder-desc">Configure endpoint parameters and click <strong>Send Request</strong> to inspect response payloads, headers, and execution latency.</p>
+            </div>
+
+            <!-- View 1: Formatted JSON / Tree -->
+            <div id="resp-view-formatted" class="resp-view" role="tabpanel" aria-labelledby="resp-tab-formatted" style="display: none;">
+              <pre id="resp-formatted-content" class="json-tree font-mono" tabindex="0"></pre>
+            </div>
+
+            <!-- View 2: Raw Response View -->
+            <div id="resp-view-raw" class="resp-view" role="tabpanel" aria-labelledby="resp-tab-raw" style="display: none;">
+              <textarea id="resp-raw-content" class="input-field textarea-field font-mono raw-response-textarea" rows="14" readonly aria-readonly="true" spellcheck="false"></textarea>
+            </div>
+
+            <!-- View 3: Response Headers View -->
+            <div id="resp-view-headers" class="resp-view" role="tabpanel" aria-labelledby="resp-tab-headers" style="display: none;">
+              <div class="table-container">
+                <table class="headers-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Header Key</th>
+                      <th scope="col">Value</th>
+                    </tr>
+                  </thead>
+                  <tbody id="resp-headers-tbody">
+                    <tr>
+                      <td colspan="2" class="text-muted text-center">No response headers yet</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <footer class="panel-footer">
+            <span class="footer-meta-text">
+              <span>Timestamp: </span>
+              <span id="resp-timestamp-text" class="text-muted">None</span>
+            </span>
+            <button id="copy-response-btn" class="btn btn-secondary btn-sm" disabled aria-disabled="true">
+              <svg id="copy-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <svg id="copied-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display: none;">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span id="copy-btn-label">Copy Payload</span>
+            </button>
+          </footer>
+        </section>
+      </main>
+    </div>
+
+    <!-- ======================================================================
+         4. DOCUMENTATION DRAWER SHELL
+         ====================================================================== -->
+    <div id="docs-backdrop" class="docs-drawer-overlay" aria-hidden="true"></div>
+    <aside id="docs-drawer" class="docs-drawer" role="dialog" aria-modal="true" aria-labelledby="docs-drawer-title"
+      aria-label="Documentation Drawer" aria-hidden="true">
+      <div class="drawer-header">
+        <div class="drawer-header-title">
+          <h2 id="docs-drawer-title" class="drawer-title">Documentation</h2>
+          <span class="drawer-subtitle">Endpoint contracts & request schemas</span>
+        </div>
+        <button id="docs-drawer-close" class="btn-icon" aria-label="Close documentation drawer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div id="docs-drawer-body" class="drawer-body has-content">
+        <div id="docs-content" class="docs-content">
+          <!-- Rendered dynamically by docs.js -->
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Minimal Phase 2 Shell Interaction Controller -->
+  <script type="module" src="js/app.js"></script>
+</body>
+
+</html>
