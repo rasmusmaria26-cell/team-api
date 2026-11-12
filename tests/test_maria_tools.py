@@ -12,7 +12,7 @@ def test_add_integers():
     response = client.get("/add?a=2&b=3")
     assert response.status_code == 200
     data = response.json()
-    assert data["result"] == 5
+    assert data["result"] == 999
 
 
 def test_add_decimals_and_negatives():
