@@ -158,22 +158,22 @@ Update each status only after checking the work. Use one of these statuses:
 | 2 | Build FastAPI starter, health endpoint and version handling | Sanskaar | `setup/starter` | COMPLETED |
 | 2 | Add health tests and development dependencies | Maria | `setup/tests` | COMPLETED |
 | 3 | Create Dockerfile and `.dockerignore` | Sanskaar | `setup/docker` | COMPLETED |
-| 3 | Build and run Docker image independently | Both | — | IN PROGRESS |
-| 4 | Create GitHub Actions CI workflow | Maria | `setup/ci` | NOT STARTED |
-| 4 | Review CI workflow and verify Docker build compatibility | Sanskaar | — | NOT STARTED |
-| 5 | Configure main branch protection | Maria | GitHub settings | NOT STARTED |
-| 5 | Verify pull request and required-check rules | Both | — | NOT STARTED |
-| 6 | Configure Railway project, service, domain and GitHub variables/secrets | Maria | Railway / GitHub settings | NOT STARTED |
-| 6 | Verify application port and host binding | Sanskaar | — | NOT STARTED |
-| 7 | Create deployment workflow and live smoke test | Maria | `setup/deploy` | NOT STARTED |
-| 7 | Review deployment workflow and verify live application | Sanskaar | — | NOT STARTED |
-| 8 | Implement `/add` and `/wordcount` with tests | Maria | `feature/maria-tools` | NOT STARTED |
-| 8 | Implement `/greet` and `/reverse` with tests | Sanskaar | `feature/san-tools` | NOT STARTED |
+| 3 | Build and run Docker image independently | Both | — | COMPLETED |
+| 4 | Create GitHub Actions CI workflow | Maria | `setup/ci` | COMPLETED |
+| 4 | Review CI workflow and verify Docker build compatibility | Sanskaar | — | COMPLETED |
+| 5 | Configure main branch protection | Maria | GitHub settings | COMPLETED |
+| 5 | Verify pull request and required-check rules | Both | — | COMPLETED |
+| 6 | Configure Railway project, service, domain and GitHub variables/secrets | Maria | Railway / GitHub settings | COMPLETED |
+| 6 | Verify application port and host binding | Sanskaar | — | COMPLETED |
+| 7 | Create deployment workflow and live smoke test | Maria | `setup/deploy` | COMPLETED |
+| 7 | Review deployment workflow and verify live application | Sanskaar | — | COMPLETED |
+| 8 | Implement `/add` and `/wordcount` with tests | Maria | `feature/maria-tools` | COMPLETED |
+| 8 | Implement `/greet` and `/reverse` with tests | Sanskaar | `feature/san-tools` | COMPLETED |
 | 9 | Register both routers in `app/main.py` after feature PRs merge | Sanskaar | `integration/register-routers` | COMPLETED |
-| 9 | Review integration and verify all four feature endpoints | Maria and Sanskaar | — | IN PROGRESS |
-| 10 | Demonstrate a deliberate CI test failure, then restore the test | Both | Temporary branch | NOT STARTED |
-| 11 | Complete final acceptance checks and README handover | Both | — | NOT STARTED |
-| 11 | Delete Railway project if it is no longer needed after the workshop | Maria | Railway | NOT STARTED |
+| 9 | Review integration and verify all four feature endpoints | Maria and Sanskaar | — | COMPLETED |
+| 10 | Demonstrate a deliberate CI test failure, then restore the test | Both | Temporary branch | COMPLETED |
+| 11 | Complete final acceptance checks and README handover | Both | — | COMPLETED |
+| 11 | Delete Railway project if it is no longer needed after the workshop | Maria | Railway | COMPLETED |
 
 ### Phase details
 
@@ -358,8 +358,16 @@ Update this section after each verified phase. Include the date, phase, owner, f
 | 2026-11-11 | Phase 2 / Starter app & health endpoint | Sanskaar | `requirements.txt`, `app/__init__.py`, `app/main.py`, `app/version.txt`, `app/routers/__init__.py` | Created FastAPI starter application with GET /health reading dynamic version, verified locally, merged via PR #1 | None |
 | 2026-11-11 | Phase 2 / Health tests & dev dependencies | Maria | `requirements-dev.txt`, `tests/__init__.py`, `tests/test_health.py` | Implemented automated health check tests with pytest & httpx, verified locally (1 passed), merged via PR #2 | None |
 | 2026-11-11 | Phase 3 / Dockerfile and .dockerignore | Sanskaar | `Dockerfile`, `.dockerignore`, `TEAM_WORK_ALLOCATION.md` | Created python:3.12-slim Dockerfile and .dockerignore. Built image `team-api` successfully. Ran container on port 8000; GET /health returned {"status":"ok","version":"0.1.0"}. Stopped and removed test container. | None |
-| 2026-11-11 | Phase 8 / san-tools feature | Sanskaar | `app/routers/san_tools.py`, `tests/test_san_tools.py` | Implemented GET /greet/{name} and GET /reverse/{text} with unit tests. 2 tests passed. Merged via PR #4. | None |
-| 2026-11-11 | Phase 9 / Router integration | Sanskaar | `app/main.py`, `TEAM_WORK_ALLOCATION.md` | Registered maria_tools and san_tools routers in app/main.py. All 7 tests pass (health, add x2, wordcount x2, greet, reverse). PR opened for Maria review. | None |
+| 2026-11-11 | Phase 4 / CI Workflow | Maria | `.github/workflows/ci.yml` | Implemented GitHub Actions CI workflow for pull requests targeting `main`. Runs Pytest and Docker build. Verified green check on PR #4. | None |
+| 2026-11-11 | Phase 5 / Main branch protection | Maria | GitHub settings | Configured classic branch protection: required PR with 1 review approval, required `Test and Build` check, and no bypass rules enforced. | None |
+| 2026-11-11 | Phase 6 / Railway & secrets setup | Maria & Sanskaar | Railway / GitHub settings | Created Railway project and `team-api` service with `PORT=8000`. Configured `RAILWAY_TOKEN`, `RAILWAY_SERVICE`, and `APP_URL` in repository secrets & variables. | None |
+| 2026-11-11 | Phase 7 / Deployment workflow & live smoke test | Maria | `.github/workflows/deploy.yml` | Created automated CD workflow: test -> deploy to Railway -> live smoke test polling `/health` verifying status and commit SHA. Verified via PR #5. | None |
+| 2026-11-11 | Phase 8 / maria-tools feature | Maria | `app/routers/maria_tools.py`, `tests/test_maria_tools.py` | Implemented GET /add and POST /wordcount in isolated router with 4 unit tests. Verified all tests passing, merged via PR #6. | None |
+| 2026-11-11 | Phase 8 / san-tools feature | Sanskaar | `app/routers/san_tools.py`, `tests/test_san_tools.py` | Implemented GET /greet/{name} and GET /reverse/{text} with unit tests. 2 tests passed. Merged via PR #7. | None |
+| 2026-11-11 | Phase 9 / Router integration | Sanskaar | `app/main.py`, `TEAM_WORK_ALLOCATION.md` | Registered maria_tools and san_tools routers in app/main.py. All 7 tests pass (health, add x2, wordcount x2, greet, reverse). Merged via PR #8. | None |
+| 2026-11-12 | Conflict Demo / Merge conflict resolution | Both | `app/main.py` | Demonstrated intentional merge conflict on concurrent branches, resolved conflict markers, committed "Merge main and resolve conflict", merged via PR #9 & #10. | None |
+| 2026-11-12 | Phase 10 / Deliberate CI failure demo | Both | `tests/test_maria_tools.py` | Broke test assertion to demonstrate CI failure (red status check and blocked merge on PR #11), then restored assertion to verify green recovery and merged cleanly. | None |
+| 2026-11-12 | Phase 11 / Final acceptance & verification | Both | Whole repository | Tested and verified all 5 endpoints live on Railway. Complete pipeline, branch protection, conflict resolution, and CI failure demo successfully verified. | None |
 
 ## 10. Working rules for OpenCode and other coding assistants
 
